@@ -1,43 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?= htmlspecialchars($movie['Title']) ?></title>
+    <title><?= htmlspecialchars($movie['Title']) ?> - Movie Details</title>
     <link rel="stylesheet" href="/public/css/styles.css">
 </head>
 <body>
-    <h1><?= htmlspecialchars($movie['Title']) ?> (<?= $movie['Year'] ?>)</h1>
-    <img src="<?= $movie['Poster'] ?>" alt="Poster" width="200"><br>
-    <strong>Genre:</strong> <?= $movie['Genre'] ?><br>
-    <strong>Plot:</strong> <?= $movie['Plot'] ?><br><br>
+    <div class="container">
+        <!-- Show login or guest message -->
+        <?php if (isset($_SESSION['user'])): ?>
+            <p>Logged in as <strong><?= htmlspecialchars($_SESSION['user']['username']) ?></strong> | <a href="index.php?action=logout">Logout</a></p>
+        <?php else: ?>
+            <p>You are browsing as <strong>Guest</strong>. <a href="index.php?action=loginForm">Login</a> or <a href="index.php?action=registerForm">Register</a></p>
+        <?php endif; ?>
 
-    <form method="POST" action="index.php?action=rate">
-        <input type="hidden" name="movie_id" value="<?= $movie['imdbID'] ?>">
-        <input type="hidden" name="movie_title" value="<?= htmlspecialchars($movie['Title']) ?>">
-        <label>Rate this movie:</label>
-        <select name="rating">
-            <?php for ($i = 1; $i <= 5; $i++): ?>
-                <option value="<?= $i ?>"><?= $i ?>/5</option>
-            <?php endfor; ?>
-        </select>
-        <button type="submit">Submit Rating</button>
-    </form>
+        <h1><?= htmlspecialchars($movie['Title']) ?> (<?= htmlspecialchars($movie['Year']) ?>)</h1>
 
-    <?php
-    $avg = \App\Models\Rating::getAverage($movie['imdbID']);
-    $count = \App\Models\Rating::getCount($movie['imdbID']);
-    ?>
-    <p><strong>Average Rating:</strong> <?= $avg ?>/5 (<?= $count ?> votes)</p>
+        <div class="movie-details">
+            <img src="<?= htmlspecialchars($movie['Poster']) ?>" alt="Poster">
+            <p><strong>Genre:</strong> <?= htmlspecialchars($movie['Genre']) ?></p>
+            <p><strong>Plot:</strong> <?= htmlspecialchars($movie['Plot']) ?></p>
 
-    <form method="POST" action="index.php?action=review">
-        <input type="hidden" name="movie_title" value="<?= htmlspecialchars($movie['Title']) ?>">
-        <button type="submit">Get AI Review</button>
-    </form>
+            <!-- Rating form -->
+            <form method="POST" action="index.php?action=rate&title=<?= urlencode($movie['Title']) ?>">
+                <label for="rating">Rate this movie:</label>
+                <select name="rating" id="rating">
+                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                        <option value="<?= $i ?>"><?= $i ?>/5</option>
+                    <?php endfor; ?>
+                </select>
+                <button type="submit">Submit Rating</button>
+            </form>
 
-    <?php if (!empty($review)): ?>
-        <h3>AI Review:</h3>
-        <p><?= nl2br(htmlspecialchars($review)) ?></p>
-    <?php endif; ?>
+            <!-- Rating display -->
+            <?php if ($average !== null): ?>
+                <p><strong>Average Rating:</strong> <?= round($average, 1) ?>/5 (<?= $count ?> votes)</p>
+            <?php else: ?>
+                <p><strong>Average Rating:</strong> 0/5 (0 votes)</p>
+            <?php endif; ?>
 
-    <br><a href="index.php">← Back to Search</a>
+            <!-- Gemini review -->
+            <form method="POST" action="index.php?action=review&title=<?= urlencode($movie['Title']) ?>">
+                <button type="submit">Get AI Review</button>
+            </form>
+
+            <h3>AI Review:</h3>
+            <p><?= isset($review) ? nl2br(htmlspecialchars($review)) : "Error generating review." ?></p>
+        </div>
+
+        <br>
+        <a href="index.php">← Back to Search</a>
+    </div>
 </body>
 </html>
