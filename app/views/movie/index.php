@@ -1,11 +1,4 @@
-<?php
-session_start();
 
-if (isset($_SESSION['user']) || isset($_SESSION['guest'])) {
-    header("Location: index.php?action=search");
-    exit;
-}
-?>
 
 <!DOCTYPE html>
 <html>
