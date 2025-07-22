@@ -1,47 +1,30 @@
 <?php
 session_start();
 
-require_once 'app/core/Database.php';
-require_once 'app/controllers/MovieController.php';
-require_once 'app/controllers/AuthController.php';
-require_once 'app/models/Movie.php';
-require_once 'app/models/Rating.php';
-require_once 'app/models/User.php';
+// Redirect to search if already logged in or guest
+if (isset($_SESSION['user']) || isset($_SESSION['guest'])) {
+    header("Location: index.php?action=search");
+    exit;
+}
+?>
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome</title>
+    <link rel="stylesheet" href="public/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 Welcome to Movie Reviewer</h1>
+        <p>Choose an option to continue:</p>
 
-    use App\Controllers\MovieController;
-    use App\Controllers\AuthController;
+        <a href="index.php?action=login"><button>🔐 Login</button></a>
+        <a href="index.php?action=register"><button>📝 Register</button></a>
 
-    $action = $_GET['action'] ?? 'search';
-
-    switch ($action) {
-        case 'search':
-            (new MovieController())->search();
-            break;
-        case 'details':
-            (new MovieController())->details($_GET['title'] ?? '');
-            break;
-        case 'rate':
-            (new MovieController())->rate($_GET['title'] ?? '');
-            break;
-        case 'review':
-            (new MovieController())->review($_GET['title'] ?? '');
-            break;
-        case 'loginForm':
-            (new AuthController())->loginForm();
-            break;
-        case 'login':
-            (new AuthController())->login();
-            break;
-        case 'logout':
-            (new AuthController())->logout();
-            break;
-        case 'registerForm':
-            (new AuthController())->registerForm();
-            break;
-        case 'register':
-            (new AuthController())->register();
-            break;
-        default:
-            echo "404 - Page not found.";
-    }
+        <form action="index.php?action=guest" method="post" style="display:inline;">
+            <button type="submit">🎭 Continue as Guest</button>
+        </form>
+    </div>
+</body>
+</html>

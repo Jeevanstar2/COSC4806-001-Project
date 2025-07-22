@@ -1,15 +1,29 @@
+<?php
+session_start();
+
+if (isset($_SESSION['user']) || isset($_SESSION['guest'])) {
+    header("Location: index.php?action=search");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Movie Search</title>
-    <link rel="stylesheet" href="/public/css/styles.css">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="public/css/styles.css">
 </head>
 <body>
-    <h1>Search for a Movie</h1>
-    <form action="index.php" method="GET">
-        <input type="hidden" name="action" value="search">
-        <input type="text" name="title" placeholder="Enter movie title" required>
-        <button type="submit">Search</button>
-    </form>
+    <div class="container">
+        <h1>🎬 Welcome to Movie Reviewer</h1>
+        <p>Choose an option to continue:</p>
+
+        <a href="index.php?action=login"><button>🔐 Login</button></a>
+        <a href="index.php?action=register"><button>📝 Register</button></a>
+
+        <form action="index.php?action=guest" method="post" style="display:inline;">
+            <button type="submit">🎭 Continue as Guest</button>
+        </form>
+    </div>
 </body>
 </html>
