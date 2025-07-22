@@ -1,35 +1,71 @@
-public function registerForm() {
-    require __DIR__ . '/../views/auth/register.php';
-}
+<?php
+namespace App\Controllers;
 
-public function register() {
-    $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
-    $confirm = $_POST['confirm'] ?? '';
+use App\Models\User;
 
-    if ($password !== $confirm) {
-        $error = "Passwords do not match.";
-        require __DIR__ . '/../views/auth/register.php';
-        return;
+class AuthController {
+    public function loginForm() {
+        require __DIR__ . '/../views/auth/login.php';
     }
 
-    $existing = \App\Models\User::findByUsername($username);
-    if ($existing) {
-        $error = "Username already taken.";
-        require __DIR__ . '/../views/auth/register.php';
-        return;
+    public function login() {
+        $username = $_POST['username'] ?? '';
+        $password = $_POST['password'] ?? '';
+
+        $user = User::findByUsername($username);
+
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['user'] = [
+                'id' => $user['id'],
+                'username' => $user['username']
+            ];
+            header("Location: index.php");
+            exit;
+        } else {
+            $error = "Invalid username or password.";
+            require __DIR__ . '/../views/auth/login.php';
+        }
     }
 
-    $hash = password_hash($password, PASSWORD_DEFAULT);
-    $db = \App\Core\Database::connect();
-    $stmt = $db->prepare("INSERT INTO people (username, password) VALUES (?, ?)");
-    $stmt->execute([$username, $hash]);
+    public function logout() {
+        session_destroy();
+        header("Location: index.php");
+        exit;
+    }
 
-    $_SESSION['user'] = [
-        'id' => $db->lastInsertId(),
-        'username' => $username
-    ];
+    public function registerForm() {
+        require __DIR__ . '/../views/auth/register.php';
+    }
 
-    header("Location: index.php");
-    exit;
+    public function register() {
+        $username = $_POST['username'] ?? '';
+        $password = $_POST['password'] ?? '';
+        $confirm = $_POST['confirm'] ?? '';
+
+        if ($password !== $confirm) {
+            $error = "Passwords do not match.";
+            require __DIR__ . '/../views/auth/register.php';
+            return;
+        }
+
+        $existing = User::findByUsername($username);
+        if ($existing) {
+            $error = "Username already taken.";
+            require __DIR__ . '/../views/auth/register.php';
+            return;
+        }
+
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $db = \App\Core\Database::connect();
+        $stmt = $db->prepare("INSERT INTO people (username, password) VALUES (?, ?)");
+        $stmt->execute([$username, $hash]);
+
+        $_SESSION['user'] = [
+            'id' => $db->lastInsertId(),
+            'username' => $username
+        ];
+
+        header("Location: index.php");
+        exit;
+    }
 }
