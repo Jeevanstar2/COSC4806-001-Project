@@ -1,8 +1,26 @@
-<html>
-  <head>
-    <title>PHP Test</title>
-  </head>
-  <body>
-    <?php echo '<p>Hello World</p>'; ?> 
+<?php
+require_once __DIR__ . '/app/core/Database.php';
+require_once __DIR__ . '/app/models/Movie.php';
+require_once __DIR__ . '/app/models/Rating.php';
+require_once __DIR__ . '/app/controllers/MovieController.php';
 
-</html>
+use App\Controllers\MovieController;
+
+$action = $_GET['action'] ?? 'index';
+
+$controller = new MovieController();
+
+switch ($action) {
+    case 'search':
+        $controller->search();
+        break;
+    case 'rate':
+        $controller->rate();
+        break;
+    case 'review':
+        $controller->review();
+        break;
+    default:
+        $controller->index();
+        break;
+}
