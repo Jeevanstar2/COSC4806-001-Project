@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/app/core/Database.php';
 require_once __DIR__ . '/app/models/Movie.php';
 require_once __DIR__ . '/app/models/Rating.php';

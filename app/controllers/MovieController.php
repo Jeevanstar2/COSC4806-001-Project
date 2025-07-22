@@ -6,15 +6,13 @@ use App\Models\Rating;
 
 class MovieController {
     public function index() {
-        // Show the search form
         require __DIR__ . '/../views/movie/index.php';
     }
 
     public function search() {
         $title = $_GET['title'] ?? '';
         $movie = Movie::fetchByTitle($title);
-        $review = ""; // Placeholder in case review was previously generated
-
+        $review = "";
         require __DIR__ . '/../views/movie/details.php';
     }
 
@@ -27,7 +25,6 @@ class MovieController {
                 Rating::add($movieId, $rating);
             }
 
-            // Redirect back to movie details
             $title = urlencode($_POST['movie_title']);
             header("Location: index.php?action=search&title=$title");
             exit;
@@ -37,10 +34,8 @@ class MovieController {
     public function review() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $movieTitle = $_POST['movie_title'];
+            $prompt = "Write a short, fun, and friendly movie review for the film titled '{$movieTitle}'.";
 
-            $prompt = "Write a short, fun and friendly movie review for the film titled '{$movieTitle}'.";
-
-            // Use your Replit secret name exactly: GEMINI_API
             $apiKey = $_ENV['GEMINI_API'] ?? getenv('GEMINI_API');
 
             if (!$apiKey) {
@@ -50,7 +45,7 @@ class MovieController {
                 return;
             }
 
-            $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={$apiKey}";
+            $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={$apiKey}";
 
             $payload = [
                 "contents" => [
@@ -62,19 +57,20 @@ class MovieController {
                 ]
             ];
 
-            $options = [
-                'http' => [
-                    'method' => 'POST',
-                    'header' => "Content-Type: application/json",
-                    'content' => json_encode($payload)
-                ]
-            ];
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json'
+            ]);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
 
-            $context = stream_context_create($options);
-            $response = @file_get_contents($url, false, $context);
+            $response = curl_exec($ch);
+            $error = curl_error($ch);
+            curl_close($ch);
 
             if (!$response) {
-                $review = "⚠️ Error: Gemini API request failed.";
+                $review = "❌ cURL error: " . $error;
             } else {
                 $data = json_decode($response, true);
                 $review = $data['candidates'][0]['content']['parts'][0]['text'] ?? "⚠️ Could not generate a review.";
