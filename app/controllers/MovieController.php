@@ -36,14 +36,14 @@ class MovieController {
             $movieTitle = $_POST['movie_title'];
 
             $prompt = "Write a short, enthusiastic movie review for '{$movieTitle}'.";
-            $apiKey = $_ENV['GEMINI_KEY'];
+            $apiKey = $_ENV['GEMINI_API'];
 
             $payload = [
                 "contents" => [[ "parts" => [[ "text" => $prompt ]]]]
             ];
 
             $response = file_get_contents(
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={$apiKey}",
+                "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key={$apiKey}",
                 false,
                 stream_context_create([
                     'http' => [
