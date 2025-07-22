@@ -19,8 +19,14 @@ class Rating {
         $stmt->execute([$movieId]);
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return round($result['avg_rating'], 2);
+
+        if ($result && $result['avg_rating'] !== null) {
+            return round($result['avg_rating'], 2);
+        } else {
+            return 0;
+        }
     }
+
 
     public static function getCount($movieId) {
         $db = Database::connect();
