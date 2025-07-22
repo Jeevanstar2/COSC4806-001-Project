@@ -8,7 +8,7 @@ use App\Controllers\MovieController;
 
 $action = $_GET['action'] ?? 'index';
 
-$controller = new MovieController();
+$controller = new \App\Controllers\MovieController();
 
 switch ($action) {
     case 'search':

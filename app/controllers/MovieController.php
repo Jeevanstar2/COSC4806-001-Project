@@ -6,7 +6,6 @@ use App\Models\Rating;
 
 class MovieController {
     public function index() {
-        // show search form
         require __DIR__ . '/../views/movie/index.php';
     }
 

@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Models;
+
 
 class Movie {
     public static function fetchByTitle($title) {
