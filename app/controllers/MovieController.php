@@ -11,7 +11,7 @@ class MovieController {
 
     public function search() {
         $title = $_GET['title'] ?? '';
-        $movie = Movie::fetchByTitle($title);
+        $movie = Movie::findByTitle($title);  // ✅ Corrected method
         $review = "";
         require __DIR__ . '/../views/movie/details.php';
     }
@@ -40,7 +40,7 @@ class MovieController {
 
             if (!$apiKey) {
                 $review = "❌ Gemini API key is missing. Set GEMINI_API in Replit secrets.";
-                $movie = \App\Models\Movie::fetchByTitle($movieTitle);
+                $movie = \App\Models\Movie::findByTitle($movieTitle); // ✅ Corrected namespace and method
                 require __DIR__ . '/../views/movie/details.php';
                 return;
             }
@@ -76,7 +76,7 @@ class MovieController {
                 $review = $data['candidates'][0]['content']['parts'][0]['text'] ?? "⚠️ Could not generate a review.";
             }
 
-            $movie = \App\Models\Movie::fetchByTitle($movieTitle);
+            $movie = \App\Models\Movie::findByTitle($movieTitle); // ✅ Corrected namespace and method
             require __DIR__ . '/../views/movie/details.php';
         }
     }

@@ -1,11 +1,13 @@
-    <?php
-    session_start();
+<?php
+session_start();
 
-    require_once 'app/core/Database.php';
-    require_once 'app/controllers/MovieController.php';
-    require_once 'app/controllers/AuthController.php';
-    require_once 'app/models/User.php';
-    require_once 'app/models/Rating.php';
+require_once 'app/core/Database.php';
+require_once 'app/controllers/MovieController.php';
+require_once 'app/controllers/AuthController.php';
+require_once 'app/models/Movie.php';
+require_once 'app/models/Rating.php';
+require_once 'app/models/User.php';
+
 
     use App\Controllers\MovieController;
     use App\Controllers\AuthController;
