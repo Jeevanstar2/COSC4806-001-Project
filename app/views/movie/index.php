@@ -1,27 +1,28 @@
 <?php
-session_start();
-
-if (isset($_SESSION['user']) || isset($_SESSION['guest'])) {
-    header("Location: index.php?action=search");
-    exit;
-}
+// app/views/movie/index.php
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Welcome</title>
+    <title>Search Movie</title>
     <link rel="stylesheet" href="public/css/styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>🎬 Welcome to Movie Reviewer</h1>
-        <p>Choose an option to continue:</p>
+        <p>
+            You are browsing as 
+            <?= isset($_SESSION['user']) ? htmlspecialchars($_SESSION['user']['username']) : 'Guest'; ?> 
+            | <a href="index.php?action=logout">Logout</a>
+        </p>
 
-        <a href="index.php?action=login"><button>🔐 Login</button></a>
-        <a href="index.php?action=register"><button>📝 Register</button></a>
+        <h1>🎥 Search for a Movie</h1>
 
-        <form action="index.php?action=guest" method="post" style="display:inline;">
-            <button type="submit">🎭 Continue as Guest</button>
+        <!-- ✅ FIX: use GET with direct URL -->
+        <form method="get" action="index.php">
+            <input type="hidden" name="action" value="search">
+            <input type="text" name="title" placeholder="Enter movie title..." required>
+            <button type="submit">🔍 Search</button>
         </form>
     </div>
 </body>
