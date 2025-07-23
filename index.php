@@ -1,8 +1,7 @@
-
 <?php
+ob_start(); // Start output buffering to avoid "headers already sent" issues
 session_start();
 
-// Include autoloader or required files
 spl_autoload_register(function ($class) {
     $class = str_replace('\\', '/', $class);
     $file = __DIR__ . '/' . $class . '.php';
@@ -11,41 +10,35 @@ spl_autoload_register(function ($class) {
     }
 });
 
-use App\Controllers\AuthController;
-use App\Controllers\MovieController;
+use app\controllers\AuthController;
+use app\controllers\MovieController;
 
 $action = $_GET['action'] ?? '';
 
-// Handle different actions
 switch ($action) {
     case 'login':
-        $authController = new AuthController();
-        $authController->login();
+        (new AuthController())->login();
         break;
-        
+
     case 'register':
-        $authController = new AuthController();
-        $authController->register();
+        (new AuthController())->register();
         break;
-        
+
     case 'logout':
-        $authController = new AuthController();
-        $authController->logout();
+        (new AuthController())->logout();
         break;
-        
+
     case 'guest':
         $_SESSION['guest'] = true;
         header("Location: index.php?action=search");
         exit;
-        
+
     case 'search':
-        // Check if user is logged in or is a guest
         if (isset($_SESSION['user']) || isset($_SESSION['guest'])) {
             $movieController = new MovieController();
             if (isset($_GET['title']) && !empty($_GET['title'])) {
                 $movieController->search();
             } else {
-                // Show search form
                 require __DIR__ . '/app/views/movie/search.php';
             }
         } else {
@@ -53,35 +46,31 @@ switch ($action) {
             exit;
         }
         break;
-        
+
     case 'rate':
         if (isset($_SESSION['user']) || isset($_SESSION['guest'])) {
-            $movieController = new MovieController();
-            $movieController->rate();
+            (new MovieController())->rate();
         } else {
             header("Location: index.php");
             exit;
         }
         break;
-        
+
     case 'review':
         if (isset($_SESSION['user']) || isset($_SESSION['guest'])) {
-            $movieController = new MovieController();
-            $movieController->review();
+            (new MovieController())->review();
         } else {
             header("Location: index.php");
             exit;
         }
         break;
-        
+
     default:
-        // Show welcome page only if not logged in
         if (isset($_SESSION['user']) || isset($_SESSION['guest'])) {
             header("Location: index.php?action=search");
             exit;
         }
-        
-        // Show welcome page
+
         ?>
         <!DOCTYPE html>
         <html>
@@ -106,4 +95,5 @@ switch ($action) {
         <?php
         break;
 }
+ob_end_flush(); // Flush output buffer
 ?>

@@ -1,8 +1,8 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\Movie;
-use App\Models\Rating;
+use app\models\Movie;
+use app\models\Rating;
 
 class MovieController {
     public function index() {
@@ -40,7 +40,7 @@ class MovieController {
 
             if (!$apiKey) {
                 $review = "❌ Gemini API key is missing. Set GEMINI_API in Replit secrets.";
-                $movie = \App\Models\Movie::findByTitle($movieTitle); // ✅ Corrected namespace and method
+                $movie = \app\models\Movie::findByTitle($movieTitle); // ✅ Corrected namespace and method
                 require __DIR__ . '/../views/movie/details.php';
                 return;
             }
@@ -76,7 +76,7 @@ class MovieController {
                 $review = $data['candidates'][0]['content']['parts'][0]['text'] ?? "⚠️ Could not generate a review.";
             }
 
-            $movie = \App\Models\Movie::findByTitle($movieTitle); // ✅ Corrected namespace and method
+            $movie = \app\models\Movie::findByTitle($movieTitle); // ✅ Corrected namespace and method
             require __DIR__ . '/../views/movie/details.php';
         }
     }
