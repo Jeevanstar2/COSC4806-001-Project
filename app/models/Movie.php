@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace app\models;
 
 class Movie {
     public static function findByTitle($title) {

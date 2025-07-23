@@ -1,11 +1,19 @@
 <?php
+use App\Models\Rating;
+
+require_once __DIR__ . '/../../models/Rating.php';
+require_once __DIR__ . '/../../core/Database.php';
+
 $title = $movie['Title'] ?? 'Unknown Title';
 $year = $movie['Year'] ?? 'N/A';
 $poster = $movie['Poster'] ?? '';
 $genre = $movie['Genre'] ?? 'N/A';
 $plot = $movie['Plot'] ?? 'No plot available.';
-$avg = isset($movie['average']) ? round($movie['average'], 1) : 0;
-$votes = $movie['votes'] ?? 0;
+
+// Fetch ratings from DB
+$movieId = $movie['id'] ?? 0;
+$avg = Rating::getAverage($movieId);
+$votes = Rating::getCount($movieId);
 ?>
 
 <p style="text-align:right;">
@@ -19,7 +27,6 @@ $votes = $movie['votes'] ?? 0;
     <?php endif; ?>
 </p>
 
-
 <h1><?= htmlspecialchars($title) ?> (<?= htmlspecialchars($year) ?>)</h1>
 
 <?php if ($poster): ?>
@@ -30,7 +37,7 @@ $votes = $movie['votes'] ?? 0;
 <p><strong>Plot:</strong> <?= htmlspecialchars($plot) ?></p>
 
 <form method="POST" action="index.php?action=rate">
-    <input type="hidden" name="movie_id" value="<?= $movie['id'] ?? 0 ?>">
+    <input type="hidden" name="movie_id" value="<?= $movieId ?>">
     <input type="hidden" name="movie_title" value="<?= htmlspecialchars($title) ?>">
     <label>Rate this movie:</label>
     <select name="rating">

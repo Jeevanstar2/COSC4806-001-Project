@@ -1,5 +1,5 @@
 <?php
-namespace App\Controllers;
+namespace app\controllers;
 
 use app\models\Movie;
 use app\models\Rating;
