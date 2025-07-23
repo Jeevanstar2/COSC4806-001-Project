@@ -16,7 +16,7 @@ class AuthController {
                 header('Location: index.php');
                 exit;
             } else {
-                $error = "Invalid credentials.";
+                $error = "❌ Invalid credentials.";
             }
         }
 
@@ -31,14 +31,15 @@ class AuthController {
             if ($username && $password) {
                 $hashed = password_hash($password, PASSWORD_DEFAULT);
                 $success = User::create($username, $hashed);
+
                 if ($success) {
                     header('Location: index.php?action=login');
                     exit;
                 } else {
-                    $error = "Username already exists.";
+                    $error = "⚠️ Username already exists.";
                 }
             } else {
-                $error = "Please fill out all fields.";
+                $error = "⚠️ Please fill out all fields.";
             }
         }
 
