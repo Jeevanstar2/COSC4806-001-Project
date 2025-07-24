@@ -15,9 +15,7 @@
             <a href="index.php?action=logout">Logout</a>
         <?php endif; ?>
     </p>
-
     <h1>🎬 Movie Search</h1>
-    
     <form method="GET" action="index.php">
         <input type="hidden" name="action" value="search">
         <label>Search for a movie:</label><br>

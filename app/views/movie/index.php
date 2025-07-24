@@ -1,7 +1,5 @@
 <?php
-// app/views/movie/index.php
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,10 +13,7 @@
             <?= isset($_SESSION['user']) ? htmlspecialchars($_SESSION['user']['username']) : 'Guest'; ?> 
             | <a href="index.php?action=logout">Logout</a>
         </p>
-
         <h1>🎥 Search for a Movie</h1>
-
-        <!-- ✅ FIX: use GET with direct URL -->
         <form method="get" action="index.php">
             <input type="hidden" name="action" value="search">
             <input type="text" name="title" placeholder="Enter movie title..." required>
