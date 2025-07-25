@@ -7,12 +7,22 @@
     <link rel="stylesheet" href="public/css/styles.css">
 </head>
 <body>
-    <div class="container">
-        <p>
-            You are browsing as 
-            <?= isset($_SESSION['user']) ? htmlspecialchars($_SESSION['user']['username']) : 'Guest'; ?> 
-            | <a href="index.php?action=logout">Logout</a>
-        </p>
+    <header class="navbar">
+        <div class="logo"><a href="index.php" style="color: inherit; text-decoration: none;">🎬 Movie Reviewer</a></div>
+        <nav>
+            <ul>
+                <li><a href="index.php?action=search">Search</a></li>
+                <?php if (isset($_SESSION['user'])): ?>
+                    <li><span style="color:#fff;">Hello, <?= htmlspecialchars($_SESSION['user']['username']) ?></span></li>
+                    <li><a href="index.php?action=logout">Logout</a></li>
+                <?php else: ?>
+                    <li><a href="index.php?action=login">Login</a></li>
+                    <li><a href="index.php?action=register">Register</a></li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+    </header>
+    <div class="container centered">
         <h1>🎥 Search for a Movie</h1>
         <form method="get" action="index.php">
             <input type="hidden" name="action" value="search">

@@ -83,14 +83,26 @@ switch ($action)
             <link rel="stylesheet" href="public/css/styles.css">
         </head>
         <body>
-            <div class="container">
+            <header class="navbar">
+                <div class="logo"><a href="index.php" style="color: inherit; text-decoration: none;">🎬 Movie Reviewer</a></div>
+                <nav>
+                    <ul>
+                        <li><a href="index.php?action=search">Search</a></li>
+                        <li><a href="index.php?action=login">Login</a></li>
+                        <li><a href="index.php?action=register">Register</a></li>
+                    </ul>
+                </nav>
+            </header>
+            <div class="container centered">
                 <h1>🎬 Welcome to Movie Reviewer</h1>
                 <p>Choose an option to continue:</p>
-                <a href="index.php?action=login"><button>🔐 Login</button></a>
-                <a href="index.php?action=register"><button>📝 Register</button></a>
-                <form action="index.php?action=guest" method="post" style="display:inline;">
-                    <button type="submit">🎭 Continue as Guest</button>
-                </form>
+                <div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center;">
+                    <a href="index.php?action=login"><button>🔐 Login</button></a>
+                    <a href="index.php?action=register"><button>📝 Register</button></a>
+                    <form action="index.php?action=guest" method="post" style="display:inline;">
+                        <button type="submit">🎭 Continue as Guest</button>
+                    </form>
+                </div>
             </div>
         </body>
         </html>

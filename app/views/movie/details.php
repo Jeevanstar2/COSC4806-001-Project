@@ -11,38 +11,56 @@ $movieId = $movie['id'] ?? 0;
 $avg = Rating::getAverage($movieId);
 $votes = Rating::getCount($movieId);
 ?>
-<p style="text-align:right;">
-    You are browsing as 
-    <strong><?= isset($_SESSION['user']) ? htmlspecialchars($_SESSION['user']['username']) : 'Guest' ?></strong>. 
-    <?php if (!isset($_SESSION['user'])): ?>
-        <a href="index.php?action=login">Login</a> or 
-        <a href="index.php?action=register">Register</a>
-    <?php else: ?>
-        <a href="index.php?action=logout">Logout</a>
-    <?php endif; ?>
-</p>
-<h1><?= htmlspecialchars($title) ?> (<?= htmlspecialchars($year) ?>)</h1>
-<?php if ($poster): ?>
-    <img src="<?= htmlspecialchars($poster) ?>" alt="Poster">
-<?php endif; ?>
-<p><strong>Genre:</strong> <?= htmlspecialchars($genre) ?></p>
-<p><strong>Plot:</strong> <?= htmlspecialchars($plot) ?></p>
-<form method="POST" action="index.php?action=rate">
-    <input type="hidden" name="movie_id" value="<?= $movieId ?>">
-    <input type="hidden" name="movie_title" value="<?= htmlspecialchars($title) ?>">
-    <label>Rate this movie:</label>
-    <select name="rating">
-        <?php for ($i = 1; $i <= 5; $i++): ?>
-            <option value="<?= $i ?>"><?= $i ?>/5</option>
-        <?php endfor; ?>
-    </select>
-    <button type="submit">Submit Rating</button>
-</form>
-<p><strong>Average Rating:</strong> <?= $avg ?>/5 (<?= $votes ?> votes)</p>
-<form method="POST" action="index.php?action=review">
-    <input type="hidden" name="movie_title" value="<?= htmlspecialchars($title) ?>">
-    <button type="submit">Get AI Review</button>
-</form>
-<h3>AI Review:</h3>
-<p><?= htmlspecialchars($review ?? "No review yet.") ?></p>
-<p><a href="index.php">← Back to Search</a></p>
+<!DOCTYPE html>
+<html>
+<head>
+    <title><?= htmlspecialchars($title) ?> - Details</title>
+    <link rel="stylesheet" href="public/css/styles.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo"><a href="index.php" style="color: inherit; text-decoration: none;">🎬 Movie Reviewer</a></div>
+        <nav>
+            <ul>
+                <li><a href="index.php?action=search">Search</a></li>
+                <?php if (isset($_SESSION['user'])): ?>
+                    <li><span style="color:#fff;">Hello, <?= htmlspecialchars($_SESSION['user']['username']) ?></span></li>
+                    <li><a href="index.php?action=logout">Logout</a></li>
+                <?php else: ?>
+                    <li><a href="index.php?action=login">Login</a></li>
+                    <li><a href="index.php?action=register">Register</a></li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <h1><?= htmlspecialchars($title) ?> (<?= htmlspecialchars($year) ?>)</h1>
+        <?php if ($poster): ?>
+            <img src="<?= htmlspecialchars($poster) ?>" alt="Poster">
+        <?php endif; ?>
+        <p><strong>Genre:</strong> <?= htmlspecialchars($genre) ?></p>
+        <p><strong>Plot:</strong> <?= htmlspecialchars($plot) ?></p>
+        <form method="POST" action="index.php?action=rate">
+            <input type="hidden" name="movie_id" value="<?= $movieId ?>">
+            <input type="hidden" name="movie_title" value="<?= htmlspecialchars($title) ?>">
+            <label>Rate this movie:</label>
+            <div class="star-rating">
+                <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+            </div>
+            <button type="submit">Submit Rating</button>
+        </form>
+        <p class="rating-summary"><strong>Average Rating:</strong> <?= $avg ?>/5 (<?= $votes ?> vote<?= $votes == 1 ? '' : 's' ?>)</p>
+        <form method="POST" action="index.php?action=review">
+            <input type="hidden" name="movie_title" value="<?= htmlspecialchars($title) ?>">
+            <button type="submit">Get AI Review</button>
+        </form>
+        <h3>AI Review:</h3>
+        <p><?= htmlspecialchars($review ?? "No review yet.") ?></p>
+        <p><a href="index.php?action=search">← Back to Search</a></p>
+    </div>
+</body>
+</html>
