@@ -7,7 +7,8 @@ class Database
     private static $pdo = null;
     public static function connect() 
     {
-        if (self::$pdo === null) {
+        if (self::$pdo === null) 
+        {
             $host = "c0tme.h.filess.io";
             $port = 61000; 
             $dbname = "COSC4806001JS2_figurewhom";
