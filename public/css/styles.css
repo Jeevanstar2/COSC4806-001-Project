@@ -93,7 +93,8 @@ footer
   color: #999;
   font-size: 0.9rem;
 }
-.navbar {
+.navbar 
+{
   background-color: var(--primary-colour);
   color: #fff;
   padding: 12px 20px;
@@ -102,56 +103,67 @@ footer
   align-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.navbar .logo {
+.navbar .logo 
+{
   font-size: 1.5rem;
   font-weight: bold;
   letter-spacing: 1px;
 }
-.navbar nav ul {
+.navbar nav ul 
+{
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   gap: 20px;
 }
-.navbar nav a {
+.navbar nav a 
+{
   color: #fff;
   font-weight: 500;
   transition: opacity 0.2s ease;
 }
-.navbar nav a:hover {
+.navbar nav a:hover 
+{
   opacity: 0.8;
   text-decoration: none;
 }
-.star-rating {
+.star-rating 
+{
   display: inline-flex;
   flex-direction: row-reverse;
   font-size: 1.8rem;
   justify-content: flex-start;
   padding: 4px 0;
 }
-.star-rating input {
+.star-rating input 
+{
   display: none;
 }
-.star-rating label {
+.star-rating label 
+{
   color: #ccc;
   cursor: pointer;
   margin: 0 2px;
   transition: color 0.2s ease;
 }
-.star-rating input:checked ~ label {
+.star-rating input:checked ~ label 
+{
   color: #FFD700;
 }
 .star-rating label:hover,
-.star-rating label:hover ~ label {
+.star-rating label:hover ~ label 
+{
   color: #FFD700;
 }
-.centered {
+.centered 
+{
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.auth-container {
+.auth-container 
+{
   max-width: 400px;
   margin: 40px auto;
   background: var(--container-bg);
@@ -159,16 +171,19 @@ footer
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
-.auth-container h2 {
+.auth-container h2 
+{
   margin-bottom: 20px;
   color: var(--primary-colour);
   text-align: center;
 }
-.auth-container form label {
+.auth-container form label 
+{
   font-weight: 500;
 }
 .auth-container form input[type="text"],
-.auth-container form input[type="password"] {
+.auth-container form input[type="password"] 
+{
   width: 100%;
   padding: 10px;
   margin-top: 6px;
@@ -176,11 +191,43 @@ footer
   border-radius: 6px;
   font-size: 1rem;
 }
-.auth-container form button {
+.auth-container form button 
+{
   margin-top: 20px;
   width: 100%;
 }
-.auth-container p {
+.auth-container p 
+{
   margin-top: 20px;
   text-align: center;
+}
+.movie-card 
+{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-start;
+}
+.movie-poster 
+{
+  flex: 1 1 200px;
+}
+.movie-info 
+{
+  flex: 2 1 300px;
+}
+.avg-stars 
+{
+  margin-left: 8px;
+  font-size: 1.4rem;
+  vertical-align: middle;
+}
+.avg-stars .star 
+{
+  color: #ccc;
+  margin-right: 2px;
+}
+.avg-stars .star.filled 
+{
+  color: #FFD700;
 }

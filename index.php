@@ -1,8 +1,7 @@
 <?php
 ob_start(); 
 session_start();
-spl_autoload_register(function ($class) 
-                      {
+spl_autoload_register(function ($class) {
     $class = str_replace('\\', '/', $class);
     $file = __DIR__ . '/' . $class . '.php';
     if (file_exists($file)) 
@@ -84,7 +83,7 @@ switch ($action)
         </head>
         <body>
             <header class="navbar">
-                <div class="logo"><a href="index.php" style="color: inherit; text-decoration: none;">🎬 Movie Reviewer</a></div>
+                <div class="logo"><a href="index.php" style="color: inherit; text-decoration: none;">🎬 CineReview</a></div>
                 <nav>
                     <ul>
                         <li><a href="index.php?action=search">Search</a></li>

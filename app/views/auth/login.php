@@ -6,7 +6,7 @@
 </head>
 <body>
     <header class="navbar">
-        <div class="logo"><a href="index.php" style="color: inherit; text-decoration: none;">🎬 Movie Reviewer</a></div>
+        <div class="logo"><a href="index.php" style="color: inherit; text-decoration: none;">🎬 CineReview</a></div>
         <nav>
             <ul>
                 <li><a href="index.php?action=search">Search</a></li>

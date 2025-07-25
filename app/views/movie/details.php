@@ -19,7 +19,7 @@ $votes = Rating::getCount($movieId);
 </head>
 <body>
     <header class="navbar">
-        <div class="logo"><a href="index.php" style="color: inherit; text-decoration: none;">🎬 Movie Reviewer</a></div>
+        <div class="logo"><a href="index.php" style="color: inherit; text-decoration: none;">🎬 CineReview</a></div>
         <nav>
             <ul>
                 <li><a href="index.php?action=search">Search</a></li>
@@ -34,33 +34,48 @@ $votes = Rating::getCount($movieId);
         </nav>
     </header>
     <div class="container">
-        <h1><?= htmlspecialchars($title) ?> (<?= htmlspecialchars($year) ?>)</h1>
-        <?php if ($poster): ?>
-            <img src="<?= htmlspecialchars($poster) ?>" alt="Poster">
-        <?php endif; ?>
-        <p><strong>Genre:</strong> <?= htmlspecialchars($genre) ?></p>
-        <p><strong>Plot:</strong> <?= htmlspecialchars($plot) ?></p>
-        <form method="POST" action="index.php?action=rate">
-            <input type="hidden" name="movie_id" value="<?= $movieId ?>">
-            <input type="hidden" name="movie_title" value="<?= htmlspecialchars($title) ?>">
-            <label>Rate this movie:</label>
-            <div class="star-rating">
-                <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
-                <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
-                <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
-                <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
-                <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+        <div class="movie-card">
+            <div class="movie-poster">
+                <?php if ($poster): ?>
+                    <img src="<?= htmlspecialchars($poster) ?>" alt="Poster">
+                <?php endif; ?>
             </div>
-            <button type="submit">Submit Rating</button>
-        </form>
-        <p class="rating-summary"><strong>Average Rating:</strong> <?= $avg ?>/5 (<?= $votes ?> vote<?= $votes == 1 ? '' : 's' ?>)</p>
-        <form method="POST" action="index.php?action=review">
-            <input type="hidden" name="movie_title" value="<?= htmlspecialchars($title) ?>">
-            <button type="submit">Get AI Review</button>
-        </form>
-        <h3>AI Review:</h3>
-        <p><?= htmlspecialchars($review ?? "No review yet.") ?></p>
-        <p><a href="index.php?action=search">← Back to Search</a></p>
+            <div class="movie-info">
+                <h1><?= htmlspecialchars($title) ?> (<?= htmlspecialchars($year) ?>)</h1>
+                <p><strong>Genre:</strong> <?= htmlspecialchars($genre) ?></p>
+                <p><strong>Plot:</strong> <?= htmlspecialchars($plot) ?></p>
+                <form method="POST" action="index.php?action=rate">
+                    <input type="hidden" name="movie_id" value="<?= $movieId ?>">
+                    <input type="hidden" name="movie_title" value="<?= htmlspecialchars($title) ?>">
+                    <label>Rate this movie:</label>
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                        <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                        <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                        <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                        <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                    </div>
+                    <button type="submit">Submit Rating</button>
+                </form>
+                <?php
+                $rounded = round($avg);
+                ?>
+                <p class="rating-summary"><strong>Average Rating:</strong> <?= $avg ?>/5 (<?= $votes ?> vote<?= $votes == 1 ? '' : 's' ?>)
+                    <span class="avg-stars">
+                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                            <span class="star<?= $i <= $rounded ? ' filled' : '' ?>">★</span>
+                        <?php endfor; ?>
+                    </span>
+                </p>
+                <form method="POST" action="index.php?action=review">
+                    <input type="hidden" name="movie_title" value="<?= htmlspecialchars($title) ?>">
+                    <button type="submit">Get AI Review</button>
+                </form>
+                <h3>AI Review:</h3>
+                <p><?= htmlspecialchars($review ?? "No review yet.") ?></p>
+                <p><a href="index.php?action=search">← Back to Search</a></p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
